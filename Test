@@ -1,0 +1,124 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        // variable declaration
+        Scanner input = new Scanner(System.in);
+        String gameStart = "";
+
+        // program introduction
+        System.out.print("ANIMAL GUESSING GAME\n");
+        System.out.print("Enter [y] to start or [n] to exit: ");
+        // catchAll method called to validate user input
+        gameStart = catchAll(input,gameStart);
+
+            // playTheGame method is called
+            playTheGame(gameStart,input);
+
+    }
+
+    public static String generateRandomWord() { // returns random string from an array
+        String[] wordList = {"Kangaroo", "Murex", "Elephant", "Orca",
+                "Capybara", "Echidna", "Grizzly", "Humuhumunukunukuapua'a"};
+        return wordList[(int) (Math.random() * wordList.length)]; // uses Math.random to pull random index to return
+    }
+
+    public static void closeProgram(String gameStart, Scanner input) { // closes the program when gameStart == "n"
+        if (gameStart.equalsIgnoreCase("n")) {
+            System.out.println("Goodbye!");
+            input.close(); // closes scanner
+            System.exit(0); // terminates the program
+        }
+    }
+
+    public static void displayStartingHint(String wordList, Scanner input) {
+        System.out.print("The word has been generated...\n");
+        System.out.print("Your hint is...\n");
+        switch (wordList) { // displays hint based on which random animals is chosen
+            case "Kangaroo":
+                System.out.print("What bipedal marsupial is found in Australia?\n");
+                guessCounter("Kangaroo", input); // word and scanner are passed into the guessCounter method
+                break;// prevents fall through.
+            case "Murex":
+                System.out.print("Which genus of mollusk does Tyrian purple come from?\n");
+                guessCounter("Murex", input);
+                break;
+            case "Elephant":
+                System.out.print("The largest land animal on Earth.\n");
+                guessCounter("Elephant", input);
+                break;
+            case "Orca":
+                System.out.print("This animal is the primary predator of Great White sharks.\n");
+                guessCounter("Orca", input);
+                break;
+            case "Capybara":
+                System.out.print("What is the largest species of rodent on Earth.\n");
+                guessCounter("Capybara", input);
+                break;
+            case "Echidna":
+                System.out.print("This animal shares its names with Typhon's consort (Greek Mythology).\n");
+                guessCounter("Echidna",input);
+                break;
+            case "Grizzly":
+                System.out.print("What is the common name for Ursus arctos horribilis.\n");
+                guessCounter("Grizzly", input);
+                break;
+            case "Humuhumunukunukuapua'a":
+                System.out.print("What is the Hawaiian state fish?\n");
+                guessCounter("Humuhumunukunukuapua'a", input);
+                break;
+        }
+
+    }
+
+    public static String catchAll(Scanner input, String startStatus) { // read and validates user input
+        startStatus = input.next(); // input and gameStart are passed as arguments
+        while (!startStatus.equalsIgnoreCase("y") && !startStatus.equalsIgnoreCase("n")) {
+            // while gameStart is not y,n,Y or N.
+                System.out.println("Invalid input.");
+                System.out.print("Enter [y] to start or [n] to exit: ");
+                // ask user to type valid input
+                startStatus = input.next();
+        }
+        // return gamestart to be used in other methods
+        return startStatus;
+    }
+
+    public static void guessCounter(String word, Scanner input) { //
+        for (int count = 3; count >= 0; count--) {
+            System.out.print("Please enter your guess: ");
+            String guess = input.next();
+
+            if (count == 0 && !guess.equalsIgnoreCase(word)) {
+                System.out.print("You're out of guesses!");
+                System.out.print(" The word was " + word + ".\n");
+                break;
+            }
+            else if(count <= 4 && guess.equalsIgnoreCase(word)) {
+                System.out.print("You've guessed correct!\n");
+                break;
+            }
+            else {
+                System.out.print("Incorrect guess. Try again! ");
+                System.out.print("You have " + count + " guess(es) left.\n");
+
+            }
+        }
+
+
+    }
+
+    public static void playTheGame (String startStatus, Scanner input) {
+        while (startStatus.equalsIgnoreCase("y")) {
+            String wordList = generateRandomWord();
+            displayStartingHint(wordList, input);
+            System.out.print("\nWould you like to continue playing? " +
+                    "Enter yes [y] to start or no [n] to exit: ");
+            startStatus = catchAll(input, startStatus);
+        }
+
+        closeProgram(startStatus, input);
+    }
+
+
+}
