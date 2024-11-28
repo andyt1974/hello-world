@@ -13,6 +13,7 @@ public class Main {
         gameStart = catchAll(input,gameStart);
 
             // playTheGame method is called
+            // playTheGame method is called
             playTheGame(gameStart,input);
 
     }
